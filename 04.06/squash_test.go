@@ -41,6 +41,33 @@ func TestSquash4(t *testing.T) {
 	}
 }
 
+func TestSquash5(t *testing.T) {
+	input := []byte("\u0085\u00A0")
+	expectedOutput := []byte(" ")
+	output := squashUnicodeSpaces(input)
+	if !reflect.DeepEqual(output, expectedOutput) {
+		t.Errorf("Expected %v, got %v", expectedOutput, output)
+	}
+}
+
+func TestSquash6(t *testing.T) {
+	input := []byte("a\u0085s\u0085d\u0085f")
+	expectedOutput := []byte("a s d f")
+	output := squashUnicodeSpaces(input)
+	if !reflect.DeepEqual(output, expectedOutput) {
+		t.Errorf("Expected %v, got %v", expectedOutput, output)
+	}
+}
+
+func TestSquash7(t *testing.T) {
+	input := []byte("a\u0085s\u0085d\u0085f")
+	expectedOutput := []byte("a s d f")
+	output := squashUnicodeSpaces(input)
+	if !reflect.DeepEqual(output, expectedOutput) {
+		t.Errorf("Expected %v, got %v", expectedOutput, output)
+	}
+}
+
 func TestSquashEmptySlice(t *testing.T) {
 	input := []byte("")
 	expectedOutput := []byte("")

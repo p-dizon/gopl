@@ -1,28 +1,22 @@
 package squash
 
-import "unicode"
-
-// func squashUnicodeSpaces(b []byte) []byte {
-// 	squashedSlice := b[:1]
-// 	for _, char := range b[1:] {
-// 		if !unicode.IsSpace(rune(char)) {
-// 			squashedSlice = append(squashedSlice, char)
-// 		} else if squashedSlice[len(squashedSlice)-1] != ' ' {
-// 			squashedSlice = append(squashedSlice, ' ')
-// 		}
-// 	}
-// 	return squashedSlice
-// }
+import (
+	"unicode"
+	"unicode/utf8"
+)
 
 func squashUnicodeSpaces(b []byte) []byte {
 	// squashedSlice will overwrite values in slice b
+	// starting with b[0]
 	squashedSlice := b[:0]
-	for _, char := range b[:] {
-		if !unicode.IsSpace(rune(char)) {
-			squashedSlice = append(squashedSlice, char)
+	for i := 0; i < len(b); {
+		r, size := utf8.DecodeRune(b[i:])
+		if !unicode.IsSpace(r) {
+			squashedSlice = append(squashedSlice, b[i:i+size]...)
 		} else if isInitialSpaceChar(squashedSlice) {
 			squashedSlice = append(squashedSlice, ' ')
 		}
+		i += size
 	}
 	return squashedSlice
 }
